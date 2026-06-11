@@ -57,3 +57,55 @@ export const rentals = sqliteTable("rentals", {
 });
 
 export type RentalRow = typeof rentals.$inferSelect;
+
+/** A person who stays (or stayed) in one of the rentals. */
+export const guests = sqliteTable("guests", {
+  id: text("id").primaryKey(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  /** Empty string = unknown. Unique when present (case-insensitive, app-enforced). */
+  email: text("email").notNull().default(""),
+  phone: text("phone").notNull().default(""),
+  /** BCP47-ish two-letter code for guest communication. */
+  language: text("language").notNull().default("en"),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at").notNull(),
+  updatedAt: integer("updated_at").notNull(),
+});
+
+export type GuestRow = typeof guests.$inferSelect;
+
+export const RESERVATION_STATUSES = ["confirmed", "cancelled"] as const;
+export const RESERVATION_SOURCES = ["direct", "manual"] as const;
+
+/**
+ * A stay. Dates are ISO "YYYY-MM-DD" (nights = checkOut - checkIn);
+ * money in integer cents. "completed" is derived (confirmed + checkOut in
+ * the past), never stored.
+ */
+export const reservations = sqliteTable("reservations", {
+  id: text("id").primaryKey(),
+  rentalId: text("rental_id")
+    .notNull()
+    .references(() => rentals.id),
+  guestId: text("guest_id")
+    .notNull()
+    .references(() => guests.id),
+  status: text("status", { enum: RESERVATION_STATUSES })
+    .notNull()
+    .default("confirmed"),
+  source: text("source", { enum: RESERVATION_SOURCES })
+    .notNull()
+    .default("manual"),
+  checkIn: text("check_in").notNull(),
+  checkOut: text("check_out").notNull(),
+  adults: integer("adults").notNull().default(1),
+  children: integer("children").notNull().default(0),
+  totalCents: integer("total_cents").notNull().default(0),
+  currency: text("currency").notNull().default("EUR"),
+  notes: text("notes").notNull().default(""),
+  createdAt: integer("created_at").notNull(),
+  updatedAt: integer("updated_at").notNull(),
+});
+
+export type ReservationRow = typeof reservations.$inferSelect;
