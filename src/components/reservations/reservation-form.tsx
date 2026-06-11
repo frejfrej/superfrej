@@ -5,7 +5,7 @@ import { useActionState } from "react";
 import {
   saveReservationAction,
   type ReservationFormState,
-} from "@/app/reservations/actions";
+} from "@/app/(admin)/reservations/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Select, TextArea, TextInput } from "@/components/ui/field";
 import { QuoteSuggest } from "@/components/reservations/quote-suggest";

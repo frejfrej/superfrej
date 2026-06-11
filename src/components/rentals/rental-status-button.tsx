@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { setRentalStatusAction } from "@/app/rentals/actions";
+import { setRentalStatusAction } from "@/app/(admin)/rentals/actions";
 import { Button } from "@/components/ui/button";
 
 /**

@@ -104,7 +104,11 @@ function validateAgainstRental(db: Db, input: ReservationInput): RentalRow {
   return rental;
 }
 
-export function createReservation(db: Db, raw: ReservationInput): SaveResult {
+export function createReservation(
+  db: Db,
+  raw: ReservationInput,
+  opts: { source?: ReservationRow["source"] } = {},
+): SaveResult {
   const input = reservationInputSchema.parse(raw);
   const rental = validateAgainstRental(db, input);
   assertDatesFree(db, input.rentalId, input.checkIn, input.checkOut);
@@ -116,7 +120,7 @@ export function createReservation(db: Db, raw: ReservationInput): SaveResult {
     rentalId: input.rentalId,
     guestId: guest.id,
     status: "confirmed",
-    source: "manual",
+    source: opts.source ?? "manual",
     checkIn: input.checkIn,
     checkOut: input.checkOut,
     adults: input.adults,

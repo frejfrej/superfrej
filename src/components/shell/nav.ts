@@ -58,7 +58,7 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     label: "Grow",
     items: [
-      { label: "Booking site", href: "/booking-site", icon: Globe, soon: true },
+      { label: "Booking site", href: "/booking-site", icon: Globe },
       { label: "Operations", href: "/operations", icon: Wrench, soon: true },
       { label: "Analytics", href: "/analytics", icon: BarChart3, soon: true },
     ],

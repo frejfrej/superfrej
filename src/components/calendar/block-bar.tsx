@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition, type CSSProperties } from "react";
-import { deleteBlockAction } from "@/app/calendar/actions";
+import { deleteBlockAction } from "@/app/(admin)/calendar/actions";
 
 /** Hatched bar for a blocked period; click twice to remove (inline confirm —
  * no browser dialogs). */

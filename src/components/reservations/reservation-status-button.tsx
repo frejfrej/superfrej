@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { setReservationStatusAction } from "@/app/reservations/actions";
+import { setReservationStatusAction } from "@/app/(admin)/reservations/actions";
 import { Button } from "@/components/ui/button";
 
 /** Cancel frees the dates; restore re-checks them (it can fail if someone

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/shell/sidebar";
-import { Topbar } from "@/components/shell/topbar";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -31,15 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${schibsted.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <div className="flex min-w-0 flex-1 flex-col">
-            <Topbar />
-            <main className="paper-grain flex-1 px-8 py-8">{children}</main>
-          </div>
-        </div>
-      </body>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }

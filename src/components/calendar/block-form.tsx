@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { createBlockAction, type BlockFormState } from "@/app/calendar/actions";
+import { createBlockAction, type BlockFormState } from "@/app/(admin)/calendar/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Select, TextInput } from "@/components/ui/field";
 import type { RentalRow } from "@/db/schema";
