@@ -38,11 +38,14 @@ export function ReservationForm({
   rentals,
   reservation,
   guest,
+  defaults,
 }: {
   /** Active rentals to choose from (plus the current one when editing). */
   rentals: RentalRow[];
   reservation?: ReservationRow;
   guest?: GuestRow;
+  /** Prefill for the create form (e.g. from a calendar day click). */
+  defaults?: { rentalId?: string; checkIn?: string };
 }) {
   const action = saveReservationAction.bind(null, reservation?.id ?? null);
   const [state, formAction, pending] = useActionState<
@@ -93,7 +96,9 @@ export function ReservationForm({
             <Select
               id="rentalId"
               name="rentalId"
-              defaultValue={reservation?.rentalId ?? rentals[0]?.id}
+              defaultValue={
+                reservation?.rentalId ?? defaults?.rentalId ?? rentals[0]?.id
+              }
             >
               {rentals.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -107,7 +112,7 @@ export function ReservationForm({
               id="checkIn"
               name="checkIn"
               type="date"
-              defaultValue={reservation?.checkIn}
+              defaultValue={reservation?.checkIn ?? defaults?.checkIn}
             />
           </Field>
           <Field label="Check-out" htmlFor="checkOut" error={e.checkOut}>

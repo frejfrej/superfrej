@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getDb } from "@/db/client";
+import { DatesUnavailableError } from "@/server/availability/service";
 import {
   cancelReservation,
   CapacityError,
@@ -59,7 +60,7 @@ export async function saveReservationAction(
     warnings = result.warnings;
     savedId = result.reservation.id;
   } catch (e) {
-    if (e instanceof OverlapError) {
+    if (e instanceof OverlapError || e instanceof DatesUnavailableError) {
       return { errors: { checkIn: e.message } };
     }
     if (e instanceof CapacityError) {
@@ -92,7 +93,9 @@ export async function setReservationStatusAction(
       restoreReservation(db, reservationId);
     }
   } catch (e) {
-    if (e instanceof OverlapError) return { error: e.message };
+    if (e instanceof OverlapError || e instanceof DatesUnavailableError) {
+      return { error: e.message };
+    }
     throw e;
   }
   revalidatePath("/reservations");
