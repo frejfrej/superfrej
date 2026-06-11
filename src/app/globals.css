@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/*
+ * Superfrej design system — "Maison"
+ * Warm hospitality-editorial: paper canvas, deep pine, terracotta accent.
+ */
+:root {
+  /* Canvas & surfaces */
+  --paper: #f6f3ec;
+  --surface: #fffdf8;
+  --surface-raised: #ffffff;
+  --hairline: #e7e0d2;
+  --hairline-strong: #d8cfbc;
+
+  /* Ink */
+  --ink: #20251f;
+  --ink-soft: #5b6055;
+  --ink-faint: #8e9285;
+
+  /* Pine (sidebar / dark surfaces) */
+  --pine: #16211a;
+  --pine-raised: #1f2d24;
+  --pine-ink: #e9e4d6;
+  --pine-ink-soft: #98a392;
+
+  /* Accents */
+  --terracotta: #c2553a;
+  --terracotta-deep: #a4452d;
+  --terracotta-soft: #f3e0d9;
+  --sage: #71845f;
+  --sage-soft: #e4e9dc;
+  --gold: #b08a3e;
+  --gold-soft: #f0e6d2;
+
+  /* Status */
+  --ok: #4d7c4f;
+  --warn: #b08a3e;
+  --danger: #b03a2e;
+
+  --radius-card: 0.875rem;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-pine: var(--pine);
+  --color-pine-raised: var(--pine-raised);
+  --color-pine-ink: var(--pine-ink);
+  --color-pine-ink-soft: var(--pine-ink-soft);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-deep: var(--terracotta-deep);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-body);
+  --radius-card: var(--radius-card);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-feature-settings: "ss01";
+}
+
+::selection {
+  background: var(--terracotta-soft);
+  color: var(--terracotta-deep);
+}
+
+/* Display typography helper — Fraunces with optical sizing */
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-variation-settings: "opsz" 40;
+  letter-spacing: -0.015em;
+}
+
+/* Subtle paper grain on the main canvas */
+.paper-grain {
+  background-image: radial-gradient(
+    rgba(32, 37, 31, 0.028) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
