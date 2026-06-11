@@ -5,7 +5,7 @@ import { useActionState } from "react";
 import {
   saveRentalAction,
   type RentalFormState,
-} from "@/app/rentals/actions";
+} from "@/app/(admin)/rentals/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Select, TextArea, TextInput } from "@/components/ui/field";
 import type { RentalRow } from "@/db/schema";

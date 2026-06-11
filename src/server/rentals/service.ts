@@ -44,6 +44,12 @@ export function getRental(db: Db, id: string): RentalRow {
   return row;
 }
 
+export function getRentalBySlug(db: Db, slug: string): RentalRow {
+  const row = db.select().from(rentals).where(eq(rentals.slug, slug)).get();
+  if (!row) throw new RentalNotFoundError(slug);
+  return row;
+}
+
 /** Find a slug that isn't taken yet: base, base-2, base-3, … */
 function availableSlug(db: Db, base: string, excludeId?: string): string {
   for (let i = 1; ; i++) {

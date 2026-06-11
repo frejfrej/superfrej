@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import {
   savePricingAction,
   type PricingFormState,
-} from "@/app/rentals/[id]/pricing/actions";
+} from "@/app/(admin)/rentals/[id]/pricing/actions";
 import { Button } from "@/components/ui/button";
 import { Field, TextInput } from "@/components/ui/field";
 import type { RentalPricingRow } from "@/db/schema";

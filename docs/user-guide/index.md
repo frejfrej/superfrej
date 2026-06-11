@@ -10,6 +10,7 @@ Chapters appear here as each module ships:
 2. [Recording reservations](reservations.md)
 3. [Using the calendar](calendar.md)
 4. [Setting your prices](pricing.md)
+5. [Your direct booking site](booking-site.md)
 
 ## Running the app
 
