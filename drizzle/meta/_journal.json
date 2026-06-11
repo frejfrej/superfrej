@@ -15,6 +15,13 @@
       "when": 1781158374072,
       "tag": "0001_blushing_firebird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1781158781293,
+      "tag": "0002_cheerful_beyonder",
+      "breakpoints": true
     }
   ]
 }
