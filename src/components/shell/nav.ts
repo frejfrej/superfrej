@@ -38,7 +38,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { label: "Dashboard", href: "/", icon: LayoutDashboard },
       { label: "Calendar", href: "/calendar", icon: CalendarDays, soon: true },
       { label: "Reservations", href: "/reservations", icon: Users, soon: true },
-      { label: "Rentals", href: "/rentals", icon: Home, soon: true },
+      { label: "Rentals", href: "/rentals", icon: Home },
       { label: "Payments", href: "/payments", icon: CreditCard, soon: true },
     ],
   },
