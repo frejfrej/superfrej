@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { and, desc, eq, ne, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import type { Db } from "@/db/client";
 import {
   guests,
@@ -10,6 +10,11 @@ import {
   type ReservationRow,
 } from "@/db/schema";
 import { nightsBetween, todayIso } from "@/lib/dates";
+import {
+  DatesUnavailableError,
+  findBlockConflict,
+  findReservationConflict,
+} from "@/server/availability/service";
 import { findOrCreateGuest } from "@/server/guests/service";
 import { getRental } from "@/server/rentals/service";
 import { reservationInputSchema, type ReservationInput } from "./validation";
@@ -48,27 +53,20 @@ export function displayStatus(
   return row.checkOut <= today ? "completed" : "confirmed";
 }
 
-/** Back-to-back stays share a day (A checks out the morning B checks in),
- * so overlap is strict: in < otherOut AND out > otherIn. */
-function findConflict(
+/** Throws if [checkIn, checkOut) collides with a confirmed reservation or a
+ * host block on this rental. Overlap is strict (back-to-back allowed). */
+function assertDatesFree(
   db: Db,
   rentalId: string,
   checkIn: string,
   checkOut: string,
   excludeId?: string,
-): ReservationRow | undefined {
-  const conditions = [
-    eq(reservations.rentalId, rentalId),
-    eq(reservations.status, "confirmed"),
-    sql`${reservations.checkIn} < ${checkOut}`,
-    sql`${reservations.checkOut} > ${checkIn}`,
-  ];
-  if (excludeId) conditions.push(ne(reservations.id, excludeId));
-  return db
-    .select()
-    .from(reservations)
-    .where(and(...conditions))
-    .get();
+): void {
+  const conflict = findReservationConflict(db, rentalId, checkIn, checkOut, excludeId);
+  if (conflict) throw new OverlapError(conflict.id);
+  if (findBlockConflict(db, rentalId, checkIn, checkOut)) {
+    throw new DatesUnavailableError("block");
+  }
 }
 
 export type ReservationWithRelations = {
@@ -109,8 +107,7 @@ function validateAgainstRental(db: Db, input: ReservationInput): RentalRow {
 export function createReservation(db: Db, raw: ReservationInput): SaveResult {
   const input = reservationInputSchema.parse(raw);
   const rental = validateAgainstRental(db, input);
-  const conflict = findConflict(db, input.rentalId, input.checkIn, input.checkOut);
-  if (conflict) throw new OverlapError(conflict.id);
+  assertDatesFree(db, input.rentalId, input.checkIn, input.checkOut);
 
   const guest = findOrCreateGuest(db, input.guest);
   const now = Date.now();
@@ -145,8 +142,7 @@ export function updateReservation(
   // A cancelled reservation never blocks dates, and editing it must not
   // bring it back: status is only changed via cancel/restore.
   if (existing.reservation.status === "confirmed") {
-    const conflict = findConflict(db, input.rentalId, input.checkIn, input.checkOut, id);
-    if (conflict) throw new OverlapError(conflict.id);
+    assertDatesFree(db, input.rentalId, input.checkIn, input.checkOut, id);
   }
   const guest = findOrCreateGuest(db, input.guest);
   db.update(reservations)
@@ -178,14 +174,7 @@ export function cancelReservation(db: Db, id: string): ReservationRow {
 /** Re-confirm a cancelled reservation; dates must still be free. */
 export function restoreReservation(db: Db, id: string): ReservationRow {
   const { reservation } = getReservation(db, id);
-  const conflict = findConflict(
-    db,
-    reservation.rentalId,
-    reservation.checkIn,
-    reservation.checkOut,
-    id,
-  );
-  if (conflict) throw new OverlapError(conflict.id);
+  assertDatesFree(db, reservation.rentalId, reservation.checkIn, reservation.checkOut, id);
   db.update(reservations)
     .set({ status: "confirmed", updatedAt: Date.now() })
     .where(eq(reservations.id, id))

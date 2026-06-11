@@ -21,7 +21,8 @@ const STEPS: {
   {
     title: "Open your calendar",
     body: "See every stay across properties, block dates, take direct bookings.",
-    status: "Soon",
+    status: "Ready",
+    href: "/calendar",
   },
   {
     title: "Connect your channels",

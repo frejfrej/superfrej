@@ -8,7 +8,13 @@ import { ReservationForm } from "@/components/reservations/reservation-form";
 export const metadata: Metadata = { title: "New reservation" };
 export const dynamic = "force-dynamic";
 
-export default async function NewReservationPage() {
+export default async function NewReservationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ rentalId?: string; checkIn?: string }>;
+}) {
+  // Prefill support: the calendar links here with ?rentalId=…&checkIn=…
+  const { rentalId, checkIn } = await searchParams;
   const rentals = listRentals(getDb(), { status: "active" });
   if (rentals.length === 0) redirect("/rentals/new");
 
@@ -20,7 +26,10 @@ export default async function NewReservationPage() {
       <h1 className="font-display mb-6 mt-2 text-3xl font-medium">
         New reservation
       </h1>
-      <ReservationForm rentals={rentals} />
+      <ReservationForm
+        rentals={rentals}
+        defaults={{ rentalId, checkIn }}
+      />
     </div>
   );
 }

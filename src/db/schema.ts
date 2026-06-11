@@ -109,3 +109,19 @@ export const reservations = sqliteTable("reservations", {
 });
 
 export type ReservationRow = typeof reservations.$inferSelect;
+
+/** Host-blocked dates (maintenance, personal use). Same date semantics as
+ * reservations: [start, end) — the end date itself is free again. */
+export const rentalBlocks = sqliteTable("rental_blocks", {
+  id: text("id").primaryKey(),
+  rentalId: text("rental_id")
+    .notNull()
+    .references(() => rentals.id),
+  startDate: text("start_date").notNull(),
+  endDate: text("end_date").notNull(),
+  reason: text("reason").notNull().default(""),
+  createdAt: integer("created_at").notNull(),
+  updatedAt: integer("updated_at").notNull(),
+});
+
+export type RentalBlockRow = typeof rentalBlocks.$inferSelect;

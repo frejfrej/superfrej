@@ -22,6 +22,13 @@
       "when": 1781158781293,
       "tag": "0002_cheerful_beyonder",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1781159140813,
+      "tag": "0003_sweet_triton",
+      "breakpoints": true
     }
   ]
 }

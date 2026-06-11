@@ -36,7 +36,7 @@ export const NAV_SECTIONS: NavSection[] = [
     label: "Manage",
     items: [
       { label: "Dashboard", href: "/", icon: LayoutDashboard },
-      { label: "Calendar", href: "/calendar", icon: CalendarDays, soon: true },
+      { label: "Calendar", href: "/calendar", icon: CalendarDays },
       { label: "Reservations", href: "/reservations", icon: Users },
       { label: "Rentals", href: "/rentals", icon: Home },
       { label: "Payments", href: "/payments", icon: CreditCard, soon: true },
