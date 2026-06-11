@@ -6,10 +6,9 @@ Welcome! Superfrej helps you run your short-term rentals: properties, calendar, 
 
 Chapters appear here as each module ships:
 
-1. Getting started *(coming with the Rentals module)*
-2. Rentals — adding and configuring properties *(coming soon)*
-3. Calendar & availability *(coming soon)*
-4. Reservations & guests *(coming soon)*
+1. [Managing your rentals](rentals.md)
+2. Calendar & availability *(coming soon)*
+3. Reservations & guests *(coming soon)*
 
 ## Running the app
 

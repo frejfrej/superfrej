@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-const STEPS = [
+const STEPS: {
+  title: string;
+  body: string;
+  status: "Ready" | "Soon";
+  href?: string;
+}[] = [
   {
     title: "Add your rentals",
     body: "Create each property with its capacity, check-in windows and house rules.",
-    status: "Up next",
+    status: "Ready",
+    href: "/rentals",
   },
   {
     title: "Set your pricing",
@@ -48,31 +54,45 @@ export default function DashboardPage() {
       </p>
 
       <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {STEPS.map((step, i) => (
-          <div
-            key={step.title}
-            className="rounded-card border border-hairline bg-surface-raised p-5 shadow-[0_1px_2px_rgba(32,37,31,0.04)]"
-          >
-            <div className="flex items-start justify-between">
-              <span className="font-display text-3xl font-light text-hairline-strong">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span
-                className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
-                  step.status === "Up next"
-                    ? "bg-terracotta-soft text-terracotta-deep"
-                    : "bg-paper text-ink-faint"
-                }`}
-              >
-                {step.status}
-              </span>
+        {STEPS.map((step, i) => {
+          const card = (
+            <>
+              <div className="flex items-start justify-between">
+                <span className="font-display text-3xl font-light text-hairline-strong">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                    step.status === "Ready"
+                      ? "bg-terracotta-soft text-terracotta-deep"
+                      : "bg-paper text-ink-faint"
+                  }`}
+                >
+                  {step.status}
+                </span>
+              </div>
+              <h2 className="mt-3 text-sm font-semibold">{step.title}</h2>
+              <p className="mt-1 text-sm leading-relaxed text-ink-soft">
+                {step.body}
+              </p>
+            </>
+          );
+          const cardClass =
+            "rounded-card border border-hairline bg-surface-raised p-5 shadow-[0_1px_2px_rgba(32,37,31,0.04)]";
+          return step.href ? (
+            <Link
+              key={step.title}
+              href={step.href}
+              className={`${cardClass} transition-colors hover:border-terracotta/40`}
+            >
+              {card}
+            </Link>
+          ) : (
+            <div key={step.title} className={cardClass}>
+              {card}
             </div>
-            <h2 className="mt-3 text-sm font-semibold">{step.title}</h2>
-            <p className="mt-1 text-sm leading-relaxed text-ink-soft">
-              {step.body}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
