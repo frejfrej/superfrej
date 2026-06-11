@@ -2,6 +2,7 @@
 import { createDb, defaultDbFile } from "./client";
 import { todayIso } from "@/lib/dates";
 import { createBlock } from "@/server/availability/service";
+import { createSeason, savePricing } from "@/server/pricing/service";
 import { createRental, listRentals } from "@/server/rentals/service";
 import { createReservation } from "@/server/reservations/service";
 
@@ -54,6 +55,39 @@ const studio = createRental(db, {
   bedrooms: 1,
   beds: 1,
   minNights: 1,
+});
+
+savePricing(db, chalet.id, {
+  baseEuros: 180,
+  weekendEuros: 220,
+  cleaningFeeEuros: 80,
+  cityTaxEuros: 2,
+  weeklyDiscountPct: 10,
+  monthlyDiscountPct: 25,
+});
+createSeason(db, {
+  rentalId: chalet.id,
+  name: "Saison de ski",
+  startDate: "2026-12-15",
+  endDate: "2027-04-15",
+  nightlyEuros: 320,
+  weekendEuros: 380,
+});
+savePricing(db, loft.id, {
+  baseEuros: 110,
+  weekendEuros: 135,
+  cleaningFeeEuros: 45,
+  cityTaxEuros: 1.5,
+  weeklyDiscountPct: 8,
+  monthlyDiscountPct: 20,
+});
+savePricing(db, studio.id, {
+  baseEuros: 75,
+  weekendEuros: "",
+  cleaningFeeEuros: 30,
+  cityTaxEuros: 1,
+  weeklyDiscountPct: 0,
+  monthlyDiscountPct: 0,
 });
 
 // Stays relative to the current month so the calendar has something to show.

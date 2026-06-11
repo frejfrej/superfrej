@@ -125,3 +125,44 @@ export const rentalBlocks = sqliteTable("rental_blocks", {
 });
 
 export type RentalBlockRow = typeof rentalBlocks.$inferSelect;
+
+/** Pricing configuration, one row per rental (created lazily with defaults).
+ * All money in integer cents; discount percentages as integers (0–90). */
+export const rentalPricing = sqliteTable("rental_pricing", {
+  rentalId: text("rental_id")
+    .primaryKey()
+    .references(() => rentals.id),
+  /** Nightly base price. */
+  baseCents: integer("base_cents").notNull().default(100_00),
+  /** Friday & Saturday nights; null = same as base. */
+  weekendCents: integer("weekend_cents"),
+  cleaningFeeCents: integer("cleaning_fee_cents").notNull().default(0),
+  /** Per guest per night. */
+  cityTaxCents: integer("city_tax_cents").notNull().default(0),
+  /** Applied when nights ≥ 7. */
+  weeklyDiscountPct: integer("weekly_discount_pct").notNull().default(0),
+  /** Applied when nights ≥ 28 (wins over weekly). */
+  monthlyDiscountPct: integer("monthly_discount_pct").notNull().default(0),
+  currency: text("currency").notNull().default("EUR"),
+  updatedAt: integer("updated_at").notNull(),
+});
+
+export type RentalPricingRow = typeof rentalPricing.$inferSelect;
+
+/** Named seasonal rate overriding nightly prices for [startDate, endDate). */
+export const rentalSeasons = sqliteTable("rental_seasons", {
+  id: text("id").primaryKey(),
+  rentalId: text("rental_id")
+    .notNull()
+    .references(() => rentals.id),
+  name: text("name").notNull(),
+  startDate: text("start_date").notNull(),
+  endDate: text("end_date").notNull(),
+  nightlyCents: integer("nightly_cents").notNull(),
+  /** null = use the season's nightly price on weekends too. */
+  weekendCents: integer("weekend_cents"),
+  createdAt: integer("created_at").notNull(),
+  updatedAt: integer("updated_at").notNull(),
+});
+
+export type RentalSeasonRow = typeof rentalSeasons.$inferSelect;
