@@ -8,6 +8,7 @@ import {
 } from "@/app/reservations/actions";
 import { Button } from "@/components/ui/button";
 import { Field, Select, TextArea, TextInput } from "@/components/ui/field";
+import { QuoteSuggest } from "@/components/reservations/quote-suggest";
 import type { GuestRow, RentalRow, ReservationRow } from "@/db/schema";
 
 const LANGUAGES = [
@@ -218,6 +219,7 @@ export function ReservationForm({
               }
             />
           </Field>
+          <QuoteSuggest />
           <Field
             label="Private notes"
             htmlFor="notes"

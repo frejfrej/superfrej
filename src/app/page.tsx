@@ -16,7 +16,8 @@ const STEPS: {
   {
     title: "Set your pricing",
     body: "Base and weekend rates, seasonal adjustments, fees and taxes.",
-    status: "Soon",
+    status: "Ready",
+    href: "/rentals",
   },
   {
     title: "Open your calendar",

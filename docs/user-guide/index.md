@@ -9,6 +9,7 @@ Chapters appear here as each module ships:
 1. [Managing your rentals](rentals.md)
 2. [Recording reservations](reservations.md)
 3. [Using the calendar](calendar.md)
+4. [Setting your prices](pricing.md)
 
 ## Running the app
 

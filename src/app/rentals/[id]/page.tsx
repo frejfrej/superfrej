@@ -39,7 +39,15 @@ export default async function RentalDetailPage({
             {rental.status === "archived" && " · archived"}
           </p>
         </div>
-        <RentalStatusButton rentalId={rental.id} status={rental.status} />
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/rentals/${rental.id}/pricing`}
+            className="inline-flex h-9 items-center rounded-lg border border-hairline-strong bg-surface-raised px-4 text-sm font-medium hover:border-ink-faint"
+          >
+            Pricing
+          </Link>
+          <RentalStatusButton rentalId={rental.id} status={rental.status} />
+        </div>
       </div>
       <RentalForm rental={rental} />
     </div>
